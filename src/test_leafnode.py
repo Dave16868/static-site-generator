@@ -18,7 +18,7 @@ class TestLeafNode(unittest.TestCase):
         node = LeafNode("apex", "fortnite and mark ass twinkie", {"will": "smith", "john": "sins"})
         self.assertEqual(node.to_html(), '<apex will="smith" john="sins">fortnite and mark ass twinkie</apex>')
 
-    def test_leaf_to_html_4(self):
+    def test_leaf_to_html_5(self):
         node = LeafNode("", "oh no empty tag")
         self.assertEqual(node.to_html(), "oh no empty tag")
 

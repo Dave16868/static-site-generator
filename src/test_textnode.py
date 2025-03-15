@@ -29,11 +29,5 @@ class TestTextNode(unittest.TestCase):
         node2 = TextNode("same text", TextType.CODE, url="nigga")
         self.assertNotEqual(node, node2)
 
-    def test_eq_6(self):
-        node = TextNode("same text", "false type")
-        node2 = TextNode("same text", TextType.CODE)
-        self.assertNotEqual(node, node2)
-
-
 if __name__ == "__main__":
     unittest.main()

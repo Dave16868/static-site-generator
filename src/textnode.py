@@ -13,6 +13,8 @@ class TextNode:
         self.text = text
         self.text_type = text_type # member of TextType enum
         self.url = url
+        if text_type not in TextType:
+            raise ValueError(f"no such thing as a {text_type}!")
        
     def __eq__(self, other):
         if not isinstance(other, TextNode):

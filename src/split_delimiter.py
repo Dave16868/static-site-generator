@@ -12,7 +12,6 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
         raise ValueError("delimiter does not match text_type")
     new_nodes = []
     for node in old_nodes: 
-        print("new node")
         if node.text_type is not TextType.TEXT:
             new_nodes.append(node)
             continue
@@ -27,9 +26,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 
         split_text = node.text.split(delimiter)
         for i in range(len(split_text)): 
-            print(f"this is split_text[i]: {split_text[i]}")
             if split_text[i] == "":
-                print("this text is empty, continuing")
                 continue
             elif i % 2 != 0: 
                 new_node = TextNode(split_text[i], text_type)

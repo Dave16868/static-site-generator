@@ -16,10 +16,5 @@ class ParentNode(HTMLNode):
 
         html_string = ""
         for child in self.children:
-            if isinstance(child, LeafNode):
-                html_string += child.to_html()
-            elif isinstance(child, ParentNode):
-                html_string += child.to_html()
-            else:
-                raise ValueError("invalid node found in children")
+            html_string += child.to_html()
         return f"<{self.tag}{self.props_to_html()}>{html_string}</{self.tag}>" 

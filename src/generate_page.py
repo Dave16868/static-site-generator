@@ -4,7 +4,7 @@ from extract_title import extract_title
 import os
 from pathlib import Path
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
 
     with open(from_path, "r") as f:
@@ -18,13 +18,15 @@ def generate_page(from_path, template_path, dest_path):
 
     final_HTML = template.replace("{{ Title }}", title)
     final_HTML = final_HTML.replace("{{ Content }}", HTML_string)
+    final_HTML = final_HTML.replace('href="/', f'href="{basepath}')
+    final_HTML= final_HTML.replace('src="/', f'src="{basepath}')
 
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
 
     with open(dest_path, "w") as f:
         f.write(final_HTML)
     
-def generate_pages_recursively(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursively(dir_path_content, template_path, dest_dir_path, basepath):
     print(f"checking if file '{dir_path_content}' exists...")
     if os.path.exists(dir_path_content):
         print(f"it exists! creating list of what's inside...")
@@ -49,6 +51,8 @@ def generate_pages_recursively(dir_path_content, template_path, dest_dir_path):
 
                 final_HTML = template.replace("{{ Title }}", title)
                 final_HTML = final_HTML.replace("{{ Content }}", HTML_string)
+                final_HTML = final_HTML.replace('href="/', f'href="{basepath}')
+                final_HTML= final_HTML.replace('src="/', f'src="{basepath}')
 
                 os.makedirs(os.path.dirname(copy_path), exist_ok=True)
 
@@ -60,12 +64,12 @@ def generate_pages_recursively(dir_path_content, template_path, dest_dir_path):
                 copy_path = os.path.join(dest_dir_path, item)
                 print(f"its a directory! calling this function again with dir_path_content: '{item_path}' and dest_dir_path: '{copy_path}'")
                 os.mkdir(copy_path)
-                generate_pages_recursively(item_path, template_path, copy_path)
+                generate_pages_recursively(item_path, template_path, copy_path, basepath)
         print(f"Finished generating pages from {dir_path_content} to {dest_dir_path}.")
     else:
         raise ValueError(f"dir_path_content doesn't exist! : {dir_path_content}")
     
-def generate_pages_recursively2(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursively2(dir_path_content, template_path, dest_dir_path, basepath):
     content_path = Path(dir_path_content)
     template_path = Path(template_path)
     dest_path = Path(dest_dir_path)
@@ -93,6 +97,8 @@ def generate_pages_recursively2(dir_path_content, template_path, dest_dir_path):
 
                 final_HTML = template.replace("{{ Title }}", title)
                 final_HTML = final_HTML.replace("{{ Content }}", HTML_string)
+                final_HTML = final_HTML.replace('href="/', f'href="{basepath}')
+                final_HTML= final_HTML.replace('src="/', f'src="{basepath}')
 
                 copy_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -102,7 +108,7 @@ def generate_pages_recursively2(dir_path_content, template_path, dest_dir_path):
             if not item.is_file():
                 print("directory!")
                 new_dir_path = dest_path / rel_path
-                generate_pages_recursively2(item, template_path, new_dir_path)
+                generate_pages_recursively2(item, template_path, new_dir_path, basepath)
             if item.is_file() and item.suffix != ".md":
                 print("non-markdown file found. Skipping...")
         print(f"Finished generating pages from {dir_path_content} to {dest_dir_path}.")
